@@ -1,7 +1,7 @@
 # MakeUofT_2021
 Project for MakeUofT 2021
 
-Electric circuit learning and automarker for high school students (potentially university students)
+**Electric circuit learning and automarker for high school students (potentially university students)**
 
 Login system - allow users (teachers or students) to register and login, record the marks and analysis the trend of study
 - For each student: must refer to a teacher, have username and password set
