@@ -1,6 +1,14 @@
 # MakeUofT_2021
 Project for MakeUofT 2021
 
+## Installation of packages
+
+```bash
+conda install -c conda-forge pyserial
+conda install -c conda-forge matplotlib
+```
+## Project Details
+
 **Electric circuit learning and automarker for high school students (potentially university students)**
 
 Login system - allow users (teachers or students) to register and login, record the marks and analysis the trend of study
@@ -10,12 +18,12 @@ Login system - allow users (teachers or students) to register and login, record 
 
 Prototype database - pre-draw circuits and record them. Setting solutions to be checked
 - Main components of a circuit: battery, resistor, capacitor, potentiometer, thermistor
-- Very simple and easy circuits
-- Parallel and serial connection of resistors
-- Estimate the resistance of a potentiometer
-- Design a specific current/resistance/voltage
-- How the thermistor resistance change due to temperature
-- RC circuit and output wave (hard/optional)
+- Very simple and easy circuits including:
+  - Parallel and serial connection of resistors
+  - Estimate the resistance of a potentiometer
+  - Design a specific current/resistance/voltage
+  - How the thermistor resistance change due to temperature
+  - RC circuit and output wave (hard/optional)
 
 Marking system - read data from the real breadboard and send it to the software. Check the answers to the solutions and reflect the result in the form of a mark.
 - Collect the voltage/resistor/current from the breadboard and send them to the software
