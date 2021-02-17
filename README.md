@@ -30,3 +30,16 @@ Marking system - read data from the real breadboard and send it to the software.
 - Compare the results with the solution and provide a mark for the overall performance
 - Also, display the mark on an LCD
 - Detection of potential sources of error?
+
+## Project Pace Tracker
+
+| Module/Part  | Name | Expected Finish Date |
+| ------------- | ------------- | ------------- |
+| Login System | Mengqi | Feb 17  |
+| Login Database  | Mengqi  | Feb 17  |
+| Circuit interface| Mengzhu  | Feb 17 |
+| Circuits schematics | Mengzhu   | Feb 18  |
+| Contents| Mengzhu & Xuening  | Feb 17  |
+| Oscilloscope | Xuening   | Feb 16  |
+| Other data detection| Xuening | Feb 17  |
+| Arduino component | Xuening  | Feb 17  |
