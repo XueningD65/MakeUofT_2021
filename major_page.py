@@ -66,7 +66,7 @@ def create(name,login):
 
     img_but = tk.Button(main_page, text="image", command=display_image)
     img_but.grid(row=4, column=0)
-###
+
     name_label = tk.Label(main_page, text = "Welcome to the Electrical Circuit Tutorials! Dear "+name)
     today = date.today()
     date_info = today.strftime("%d/%b/%Y %H:%M:%S")
