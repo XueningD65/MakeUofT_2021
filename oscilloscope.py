@@ -35,6 +35,7 @@ style.use("ggplot")
 
 f = Figure(figsize=(5, 5), dpi=100)
 a = f.add_subplot(111)
+a.grid()
 
 global x,y
 x = 1
@@ -83,14 +84,17 @@ def animate(i):
     print("curr: ", string)
     if (isfloat(string)):
         flt = float(string)
+    elif (string == "" and len(data)>=1):
+        flt = data[-1]
     else:
         flt = 0
     data.append(flt)
     a.clear()
-    a.grid()
-    a.plot(range(len(data)), data, marker='o', color='orange')
+    a.plot(range(len(data)), data, marker='o', color='blue')
+    a.set_ylabel("Voltage")
+    a.set_xlabel("Time")
+    a.grid(True)
     time.sleep(0.2)
-
 
 class oscilloscope(tk.Tk):
 
@@ -126,41 +130,41 @@ class StartPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Start Page", font=LARGE_FONT)
-        label.pack(pady=10, padx=10)
+        label.grid(row=0, column=1, padx=10, pady=5)
 
         button = ttk.Button(self, text="Visit Page 1",
                             command=lambda: controller.show_frame(PageOne))
-        button.pack()
+        button.grid(row=1, column=1, padx=10, pady=5)
 
         button2 = ttk.Button(self, text="Visit Page 2",
                              command=lambda: controller.show_frame(PageTwo))
-        button2.pack()
+        button2.grid(row=1, column=2, padx=10, pady=5)
 
         button3 = ttk.Button(self, text="Start Plotting",
                              command=lambda: controller.show_frame(PageThree))
-        button3.pack()
+        button3.grid(row=2, column=0, padx=10, pady=5)
 
         button_4 = tk.Button(self, text="Connect", width=10, command=connect)
-        button_4.pack()
+        button_4.grid(row=2, column=1, padx=10, pady=5)
         button_5 = tk.Button(self, text="Close", width=10, command=close)
-        button_5.pack()
+        button_5.grid(row=2, column=2, padx=10, pady=5)
         button_6 = tk.Button(self, text="Show Connection", width=10, command=show)
-        button_6.pack()
+        button_6.grid(row=2, column=3, padx=10, pady=5)
 
 class PageOne(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Page One!!!", font=LARGE_FONT)
-        label.pack(pady=10, padx=10)
+        label.grid(row=0, column=1, padx=10, pady=5)
 
         button1 = ttk.Button(self, text="Back to Home",
                              command=lambda: controller.show_frame(StartPage))
-        button1.pack()
+        button1.grid(row=1, column=0, padx=10, pady=5)
 
         button2 = ttk.Button(self, text="Page Two",
                              command=lambda: controller.show_frame(PageTwo))
-        button2.pack()
+        button2.grid(row=1, column=1, padx=10, pady=5)
 
 
 class PageTwo(tk.Frame):
@@ -168,15 +172,15 @@ class PageTwo(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Page Two!!!", font=LARGE_FONT)
-        label.pack(pady=10, padx=10)
+        label.grid(row=0, column=0, padx=10, pady=5)
 
         button1 = ttk.Button(self, text="Back to Home",
                              command=lambda: controller.show_frame(StartPage))
-        button1.pack()
+        button1.grid(row=1, column=0, padx=10, pady=5)
 
         button2 = ttk.Button(self, text="Page One",
                              command=lambda: controller.show_frame(PageOne))
-        button2.pack()
+        button2.grid(row=1, column=1, padx=10, pady=5)
 
 
 class PageThree(tk.Frame):
@@ -186,14 +190,12 @@ class PageThree(tk.Frame):
 
         def clear():
             a.clear()
-            a.grid()
+            a.grid(True)
             global data
             data = []
 
-        label = tk.Label(self, text="Graph Page!", font=LARGE_FONT)
+        label = tk.Label(self, text="Live Plotting!", font=LARGE_FONT)
         label.pack(pady=10, padx=10)
-        lab = tk.Label(self, text="Live Plotting")
-        lab.pack()
 
         button1 = ttk.Button(self, text="Back to Home",
                              command=lambda: controller.show_frame(StartPage))
@@ -208,6 +210,10 @@ class PageThree(tk.Frame):
 
         button_s = tk.Button(self, text="Stop Plotting", width=10, command=close)
         button_s.pack()
+
+        button_r = tk.Button(self, text="Resume Plotting", width=10, command=connect)
+        button_r.pack()
+
         canvas = FigureCanvasTkAgg(f, self)
         canvas.draw()
         canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
