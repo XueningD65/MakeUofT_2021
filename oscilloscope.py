@@ -27,6 +27,7 @@ f = Figure(figsize=(5, 5), dpi=100)
 a = f.add_subplot(111)
 a.grid()
 
+
 global x,y
 x = 1
 y = 1
@@ -45,6 +46,12 @@ potentiometer = True
 global curr_val, data_read
 curr_val = 0
 data_read = False
+
+global ani
+
+def start_ani():
+    global ani
+    ani = animation.FuncAnimation(f, animate, interval=200)
 
 def isfloat(value):
   try:
@@ -126,6 +133,7 @@ class oscilloscope(tk.Tk):
 
         tk.Tk.iconbitmap(self)
         tk.Tk.wm_title(self, "Oscilloscope")
+
 
         container = tk.Frame(self)
         container.grid(row=0, column=0, padx=10, pady=5)
@@ -279,6 +287,6 @@ class PageThree(tk.Frame):
         toolbar.update()
         #canvas._tkcanvas.grid(row=4, column=1, padx=10, pady=5)
 
-app = oscilloscope()
-ani = animation.FuncAnimation(f, animate, interval=200)
-app.mainloop()
+#app = oscilloscope()
+#ani = animation.FuncAnimation(f, animate, interval=200)
+#app.mainloop()
