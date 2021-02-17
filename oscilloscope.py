@@ -49,13 +49,15 @@ global connected, ser, data
 connected = 0
 data = []
 
+global potentiometer
+potentiometer = True
+
 def isfloat(value):
   try:
     float(value)
     return True
   except ValueError:
     return False
-
 
 def connect():
     global connected, ser
@@ -89,8 +91,16 @@ def animate(i):
     else:
         flt = 0
     data.append(flt)
+
+    data_ot = []
+    if (potentiometer==True):
+        for num in data:
+            data_ot.append(5-num)
+
     a.clear()
-    a.plot(range(len(data)), data, marker='o', color='blue')
+    a.plot(range(len(data)), data, marker='.', color='blue' , label='Vpot', linewidth=0.5)
+    a.plot(range(len(data_ot)), data_ot, marker='.', color='red', label='Vres',  linewidth=0.5)
+
     a.set_ylabel("Voltage")
     a.set_xlabel("Time")
     a.grid(True)
@@ -105,7 +115,7 @@ class oscilloscope(tk.Tk):
         tk.Tk.wm_title(self, "Oscilloscope")
 
         container = tk.Frame(self)
-        container.pack(side="top", fill="both", expand=True)
+        container.grid(row=0, column=0, padx=10, pady=5)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
@@ -195,34 +205,33 @@ class PageThree(tk.Frame):
             data = []
 
         label = tk.Label(self, text="Live Plotting!", font=LARGE_FONT)
-        label.pack(pady=10, padx=10)
+        label.grid(row=0, column=0, padx=10, pady=5)
 
         button1 = ttk.Button(self, text="Back to Home",
                              command=lambda: controller.show_frame(StartPage))
-        button1.pack()
+        button1.grid(row=1, column=0, padx=10, pady=5)
 
         global data
         data = []
         clear()
 
         button_c = tk.Button(self, text="Clear Plotting", width=10, command=clear)
-        button_c.pack()
+        button_c.grid(row=2, column=0, padx=10, pady=5)
 
         button_s = tk.Button(self, text="Stop Plotting", width=10, command=close)
-        button_s.pack()
+        button_s.grid(row=2, column=1, padx=10, pady=5)
 
         button_r = tk.Button(self, text="Resume Plotting", width=10, command=connect)
-        button_r.pack()
+        button_r.grid(row=2, column=2, padx=10, pady=5)
 
         canvas = FigureCanvasTkAgg(f, self)
         canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
-
-        toolbar = NavigationToolbar2Tk(canvas, self)
+        canvas.get_tk_widget().grid(row=3, column=1, padx=10, pady=5)
+        toolbarFrame = Frame(self)
+        toolbarFrame.grid(row=4, column=1)
+        toolbar = NavigationToolbar2Tk(canvas, toolbarFrame)
         toolbar.update()
-        canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-
-
+        #canvas._tkcanvas.grid(row=4, column=1, padx=10, pady=5)
 
 app = oscilloscope()
 ani = animation.FuncAnimation(f, animate, interval=200)
