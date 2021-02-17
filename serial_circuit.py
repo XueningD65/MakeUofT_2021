@@ -160,27 +160,12 @@ class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Start Page", font=LARGE_FONT)
+        label = tk.Label(self, text="Serial Circuit Image", font=LARGE_FONT)
         label.grid(row=0, column=1, padx=10, pady=5)
 
-        button = ttk.Button(self, text="Visit Page 1",
+        button = ttk.Button(self, text="display",
                             command=lambda: controller.show_frame(PageOne))
         button.grid(row=1, column=1, padx=10, pady=5)
-
-        button2 = ttk.Button(self, text="Visit Page 2",
-                             command=lambda: controller.show_frame(PageTwo))
-        button2.grid(row=1, column=2, padx=10, pady=5)
-
-        button3 = ttk.Button(self, text="Start Plotting",
-                             command=lambda: controller.show_frame(PageThree))
-        button3.grid(row=2, column=0, padx=10, pady=5)
-
-        button_4 = tk.Button(self, text="Connect", width=10, command=connect)
-        button_4.grid(row=2, column=1, padx=10, pady=5)
-        button_5 = tk.Button(self, text="Close", width=10, command=close)
-        button_5.grid(row=2, column=2, padx=10, pady=5)
-        button_6 = tk.Button(self, text="Show Connection", width=10, command=show)
-        button_6.grid(row=2, column=3, padx=10, pady=5)
 
 global count
 count = 0
