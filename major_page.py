@@ -16,6 +16,8 @@ import oscilloscope as oscill
 from tkinter import *
 from PIL import ImageTk,Image
 
+import serial_circuit as se
+
 import serial
 import time
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
@@ -49,6 +51,10 @@ def create(name,login):
     def display_image():
         global canvas
         canvas.create_image(200, 200, image=img_gif_1)
+        print("Studying potentiometer...")
+        app = se.serial()
+        se.start_ani()
+        app.mainloop()
         #print("hiiii")
         #img_label = tk.Label(main_page, text="Welcome to the Electrical Circuit Tutorials! Dear " + name)
         #img_label.grid(row=4, column=1)
