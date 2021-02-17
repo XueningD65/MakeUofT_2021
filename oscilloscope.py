@@ -9,22 +9,12 @@
 import matplotlib
 
 matplotlib.use("TkAgg")
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-from matplotlib.figure import Figure
-import matplotlib.animation as animation
-from matplotlib import style
-
-import tkinter as tk
-from tkinter import ttk
 
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 import serial
 import time
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-import matplotlib
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
 import matplotlib.animation as animation
@@ -52,6 +42,10 @@ data = []
 global potentiometer
 potentiometer = True
 
+global curr_val, data_read
+curr_val = 0
+data_read = False
+
 def isfloat(value):
   try:
     float(value)
@@ -71,8 +65,27 @@ def close():
     connected = 0
     print("bye")
 
+def read_once():
+    if (connected == 0):
+        print("You are not connected to the board")
+    global curr_val, data_read
+    data_read = True
+
+    b = ser.readline()  # read a byte string
+    string_n = b.decode()  # decode byte string into Unicode
+    string = string_n.rstrip()  # remove \n and \r
+    print("My data read: ", string)
+    if (isfloat(string)):
+        flt = float(string)
+    elif (string == "" and len(data) >= 1):
+        flt = data[-1]
+    else:
+        flt = 0
+    curr_val = flt
+
 def show():
   print("Connected: ", connected)
+
 
 def animate(i):
 
@@ -161,11 +174,34 @@ class StartPage(tk.Frame):
         button_6 = tk.Button(self, text="Show Connection", width=10, command=show)
         button_6.grid(row=2, column=3, padx=10, pady=5)
 
+global count
+count = 0
+
 class PageOne(tk.Frame):
 
     def __init__(self, parent, controller):
+
+        def update_status():
+
+            # Get the current message
+            current_status = lab2["text"]
+
+            # If the message is "Working...", start over with "Working"
+            if(data_read == False):
+                current_status = " "
+
+            # If not, then just add a "." on the end
+            else:
+                current_status = str(curr_val)
+
+            # Update the message
+            lab2["text"] = current_status
+
+            # After 1 second, update the status
+            self.after(100, update_status)
+
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Page One!!!", font=LARGE_FONT)
+        label = tk.Label(self, text="Test Auto Filling", font=LARGE_FONT)
         label.grid(row=0, column=1, padx=10, pady=5)
 
         button1 = ttk.Button(self, text="Back to Home",
@@ -175,6 +211,16 @@ class PageOne(tk.Frame):
         button2 = ttk.Button(self, text="Page Two",
                              command=lambda: controller.show_frame(PageTwo))
         button2.grid(row=1, column=1, padx=10, pady=5)
+
+        button3 = ttk.Button(self, text="Read",
+                             command=read_once)
+        button3.grid(row=2, column=2, padx=10, pady=5)
+
+        lab1 = tk.Label(self, text="My voltage: ")
+        lab1.grid(row=2, column=0, padx=10, pady=5)
+        lab2 = tk.Label(self, text=" ")
+        lab2.grid(row=2, column=1, padx=10, pady=5)
+        self.after(100, update_status)
 
 
 class PageTwo(tk.Frame):
@@ -205,11 +251,11 @@ class PageThree(tk.Frame):
             data = []
 
         label = tk.Label(self, text="Live Plotting!", font=LARGE_FONT)
-        label.grid(row=0, column=0, padx=10, pady=5)
+        label.grid(row=0, column=1, padx=10, pady=5)
 
         button1 = ttk.Button(self, text="Back to Home",
                              command=lambda: controller.show_frame(StartPage))
-        button1.grid(row=1, column=0, padx=10, pady=5)
+        button1.grid(row=1, column=1, padx=10, pady=5)
 
         global data
         data = []
