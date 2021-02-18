@@ -1,9 +1,9 @@
 #
-#  serial.py
+#  serial_circuit.py
 #  MakeUofT_2021
 #
-#  Created by Mengzhu on 2021-02-16.
-#  Copyright © 2021 Mengzhu. All rights reserved.
+#  Created by Xuening & Mengzhu on 2021-02-16.
+#  Copyright © 2021 Xuening & Mengzhu. All rights reserved.
 #
 
 import matplotlib
@@ -15,6 +15,8 @@ from tkinter import *
 from tkinter import ttk
 import serial
 import time
+from tkinter import *
+from PIL import ImageTk,Image
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
 import matplotlib.animation as animation
@@ -41,17 +43,23 @@ connected = 0
 data = []
 
 global potentiometer
-potentiometer = True
+potentiometer = False
 
 global curr_val, data_read
 curr_val = 0
 data_read = False
 
-global ani
+global ani_s
+global canvas
+global img_gif_1
+
+global image_path
+image_path ="/Users/dongxuening/Desktop/MakeUofT_2021/1.png"
 
 def start_ani():
-    global ani
-    ani = animation.FuncAnimation(f, animate, interval=200)
+    print("Invoked in serial")
+    global ani_s
+    ani_s = animation.FuncAnimation(f, animate, interval=200)
 
 def isfloat(value):
   try:
@@ -63,6 +71,7 @@ def isfloat(value):
 def connect():
     global connected, ser
     ser = serial.Serial('/dev/cu.usbmodem141101', 9800, timeout=1)
+
     connected = 1
     print("hi")
 
@@ -91,7 +100,10 @@ def read_once():
     curr_val = flt
 
 def show():
-  print("Connected: ", connected)
+  if(connected==1):
+      print("Connected to board ")
+  else:
+      print("Not connected to any board")
 
 
 def animate(i):
@@ -126,20 +138,20 @@ def animate(i):
     a.grid(True)
     time.sleep(0.2)
 
-class serial(tk.Tk):
+class tk_serial(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
         tk.Tk.iconbitmap(self)
-        tk.Tk.wm_title(self, "serial")
-
+        tk.Tk.wm_title(self, "Serial Circuit")
 
         container = tk.Frame(self)
         container.grid(row=0, column=0, padx=10, pady=5)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
+        self.geometry('1000x800')
         self.frames = {}
 
         for F in (StartPage, PageOne, PageTwo, PageThree):
@@ -160,12 +172,37 @@ class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+
+        start_ani()
+
         label = tk.Label(self, text="Serial Circuit Image", font=LARGE_FONT)
         label.grid(row=0, column=1, padx=10, pady=5)
 
         button = ttk.Button(self, text="display",
                             command=lambda: controller.show_frame(PageOne))
-        button.grid(row=1, column=1, padx=10, pady=5)
+        button.grid(row=1, column=0, padx=10, pady=5)
+
+        button2 = ttk.Button(self, text="Page Two",
+                            command=lambda: controller.show_frame(PageTwo))
+        button2.grid(row=2, column=0, padx=10, pady=5)
+
+        button3 = ttk.Button(self, text="Oscilloscope",
+                             command=lambda: controller.show_frame(PageThree))
+        button3.grid(row=3, column=0, padx=10, pady=5)
+
+        button_4 = tk.Button(self, text="Connect", width=10, command=connect)
+        button_4.grid(row=3, column=1, padx=10, pady=5)
+        button_5 = tk.Button(self, text="Close", width=10, command=close)
+        button_5.grid(row=3, column=2, padx=10, pady=5)
+        button_6 = tk.Button(self, text="Show Connection", width=10, command=show)
+        button_6.grid(row=3, column=3, padx=10, pady=5)
+
+        global canvas
+        global img_gif_1
+        img_gif_1 = ImageTk.PhotoImage(Image.open(image_path))
+        canvas = Canvas(self, width=600, height=500)
+        canvas.grid(row=2, column=2)
+        canvas.create_image(200, 200, image=img_gif_1)
 
 global count
 count = 0

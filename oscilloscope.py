@@ -47,11 +47,12 @@ global curr_val, data_read
 curr_val = 0
 data_read = False
 
-global ani
+global ani_o
 
 def start_ani():
-    global ani
-    ani = animation.FuncAnimation(f, animate, interval=200)
+    print("Invoked in oscilloscope")
+    global ani_o
+    ani_o = animation.FuncAnimation(f, animate, interval=200)
 
 def isfloat(value):
   try:
@@ -91,7 +92,10 @@ def read_once():
     curr_val = flt
 
 def show():
-  print("Connected: ", connected)
+    if (connected == 1):
+        print("Connected to board ")
+    else:
+        print("Not connected to any board")
 
 
 def animate(i):
