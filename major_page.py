@@ -334,7 +334,6 @@ def create(name,login):
             print("R1 = ", R1, " R2 = ", R2)
 
     class parallel_page(tk.Frame):
-        global R1, R2
 
         def __init__(self, parent, controller):
             def check():
@@ -396,7 +395,7 @@ def create(name,login):
             canvas.grid(row=2, column=1)
             canvas.create_image(200, 200, image=img_gif_3)
 
-            random.seed(10)
+            random.seed(5)
             R = random.sample(range(0, 4), 3)
             R1 = resistance[R[0]]
             R2 = resistance[R[2]]
@@ -418,11 +417,7 @@ def create(name,login):
 
             button_b = ttk.Button(self, text="Back to Home",
                                  command=lambda: controller.show_frame(page1))
-            button_b.grid(row=1, column=1, padx=10, pady=5)
-
-            button2 = ttk.Button(self, text="Page Two",
-                                 command=lambda: controller.show_frame(PageTwo))
-            button2.grid(row=2, column=0, padx=10, pady=5)
+            button_b.grid(row=1, column=0, padx=10, pady=5)
 
             button3 = ttk.Button(self, text="Oscilloscope",
                                  command=lambda: controller.show_frame(oscilloscope_page))
@@ -442,8 +437,17 @@ def create(name,login):
             global img_gif_2
             img_gif_2 = ImageTk.PhotoImage(Image.open("/Users/dongxuening/Desktop/MakeUofT_2021/3.png"))
             canvas = Canvas(self, width=600, height=500)
-            canvas.grid(row=2, column=2)
+            canvas.grid(row=2, column=1)
             canvas.create_image(200, 200, image=img_gif_2)
+
+            random.seed(100)
+            R = random.sample(range(0, 4), 3)
+            R1 = resistance[R[0]]
+
+            lab_r = tk.Label(self, text="R1 = " + str(R1))
+            lab_r.grid(row=2, column=2, padx=10, pady=5)
+
+            print("R1 = ", R1)
 
 
     class PageOne(tk.Frame):
